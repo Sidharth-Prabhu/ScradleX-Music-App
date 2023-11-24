@@ -5,7 +5,6 @@
     <p>A Custom made fork of ViMusic.</p>
 
 [![Downloads](https://img.shields.io/badge/-Jetpack%20Compose-3a83f9?style=for-the-badge&logo=jetpackcompose&logoColor=white&labelColor=2ec781)](https://developer.android.com/jetpack/compose)
-[![Downloads](https://img.shields.io/github/downloads/vfsfitvnm/ViMusic/total?style=for-the-badge&labelColor=002b41)](https://github.com/vfsfitvnm/ViMusic/releases)
 </div>
 
 ---
