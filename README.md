@@ -1,7 +1,8 @@
 <div align="center">
     <img src="https://scradlex.netlify.app/assets/scradlex.png" width="128" height="128" style="display: block; margin: 0 auto"/>
-    <h1>ViMusic</h1>
+    <h1>ScradleX - The Music App</h1>
     <p>A Jetpack Compose Android application for streaming music from YouTube Music</p>
+    <p>A Custom made fork of ViMusic.</p>
 
 [![Downloads](https://img.shields.io/badge/-Jetpack%20Compose-3a83f9?style=for-the-badge&logo=jetpackcompose&logoColor=white&labelColor=2ec781)](https://developer.android.com/jetpack/compose)
 [![Downloads](https://img.shields.io/github/downloads/vfsfitvnm/ViMusic/total?style=for-the-badge&labelColor=002b41)](https://github.com/vfsfitvnm/ViMusic/releases)
