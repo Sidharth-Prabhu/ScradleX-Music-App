@@ -11,10 +11,9 @@
 
 <p>
   <img src="https://scradlex.netlify.app/content/image/image1.jpeg" width="200" />
-  <img src="https://scradlex.netlify.app/content/image/image2.jpeg" width="200" />
+  <img src="https://scradlex.netlify.app/content/image/image5.jpeg" width="200" />
   <img src="https://scradlex.netlify.app/content/image/image3.jpeg" width="200" />
   <img src="https://scradlex.netlify.app/content/image/image4.jpeg" width="200" />
-  <img src="https://scradlex.netlify.app/content/image/image5.jpeg" width="200" />
 </p>
 
 ## Features
