@@ -74,6 +74,7 @@ import it.vfsfitvnm.vimusic.utils.isLandscape
 import it.vfsfitvnm.vimusic.utils.secondary
 import it.vfsfitvnm.vimusic.utils.semiBold
 import kotlinx.coroutines.flow.distinctUntilChanged
+import java.util.Calendar
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -117,6 +118,15 @@ fun QuickPicks(
 
     val endPaddingValues = windowInsets.only(WindowInsetsSides.End).asPaddingValues()
 
+    val currentTime = Calendar.getInstance().time
+    val hour = currentTime.hours
+    val greeting = when (hour) {
+        in 0..11 -> "Good morning!"
+        in 12..15 -> "Good afternoon!"
+        in 16..20 -> "Good evening!"
+        else -> "Good night!"
+    }
+
     val sectionTextModifier = Modifier
         .padding(horizontal = 16.dp)
         .padding(top = 24.dp, bottom = 8.dp)
@@ -152,7 +162,7 @@ fun QuickPicks(
                 )
         ) {
             Header(
-                title = "Quick picks",
+                title = greeting,
                 modifier = Modifier
                     .padding(endPaddingValues)
             )

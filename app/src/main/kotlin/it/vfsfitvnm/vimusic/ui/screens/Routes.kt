@@ -20,7 +20,6 @@ val playlistRoute = Route1<String?>("playlistRoute")
 val searchResultRoute = Route1<String>("searchResultRoute")
 val searchRoute = Route1<String>("searchRoute")
 val settingsRoute = Route0("settingsRoute")
-
 @SuppressLint("ComposableNaming")
 @Suppress("NOTHING_TO_INLINE")
 @ExperimentalAnimationApi

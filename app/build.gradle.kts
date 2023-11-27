@@ -8,11 +8,11 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "it.vfsfitvnm.vimusic"
+        applicationId = "com.frissco.scradlex"
         minSdk = 21
         targetSdk = 33
-        versionCode = 20
-        versionName = "0.5.4"
+        versionCode = 23
+        versionName = "1.14"
     }
 
     splits {
@@ -27,13 +27,13 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
-            manifestPlaceholders["appName"] = "Debug"
+            manifestPlaceholders["appName"] = "ScradleX"
         }
 
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            manifestPlaceholders["appName"] = "ViMusic"
+            manifestPlaceholders["appName"] = "ScradleX"
             signingConfig = signingConfigs.getByName("debug")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
@@ -87,6 +87,8 @@ dependencies {
     implementation(libs.exoplayer)
 
     implementation(libs.room)
+    implementation("com.google.firebase:firebase-config:21.6.0")
+    implementation ("org.jsoup:jsoup:1.14.3")
     kapt(libs.room.compiler)
 
     implementation(projects.innertube)

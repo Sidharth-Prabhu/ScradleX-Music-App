@@ -1,16 +1,22 @@
 package it.vfsfitvnm.vimusic
 
+import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -34,6 +40,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,11 +54,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.coerceIn
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
@@ -95,11 +105,14 @@ import it.vfsfitvnm.vimusic.utils.preferences
 import it.vfsfitvnm.vimusic.utils.thumbnailRoundnessKey
 import it.vfsfitvnm.vimusic.utils.useSystemFontKey
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jsoup.Jsoup
+import java.io.IOException
 
 class MainActivity : ComponentActivity(), PersistMapOwner {
     private val serviceConnection = object : ServiceConnection {
@@ -112,6 +125,8 @@ class MainActivity : ComponentActivity(), PersistMapOwner {
         override fun onServiceDisconnected(name: ComponentName?) {
             binder = null
         }
+        // Inside your MainActivity
+
     }
 
     private var binder by mutableStateOf<PlayerService.Binder?>(null)
@@ -135,6 +150,7 @@ class MainActivity : ComponentActivity(), PersistMapOwner {
         val launchedFromNotification = intent?.extras?.getBoolean("expandPlayerBottomSheet") == true
 
         setContent {
+            WebViewWithCheck(this)
             val coroutineScope = rememberCoroutineScope()
             val isSystemInDarkTheme = isSystemInDarkTheme()
 
@@ -405,6 +421,186 @@ class MainActivity : ComponentActivity(), PersistMapOwner {
         }
 
         onNewIntent(intent)
+    }
+    @Composable
+    fun WebViewWithCheck(context: Context) {
+        val webView = WebView(context)
+
+        AndroidView(
+            factory = { webView },
+            modifier = Modifier.fillMaxSize()
+        ) { webview ->
+            webview.webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    // Launch a coroutine to call the suspend function
+                    GlobalScope.launch {
+                        checkPTagValue(url, context)
+                        checkServerMaintenance(url, context)
+                        nAvailableOnReg(url, context)
+                        tempShutDown(url, context)
+                        permShutDown(url, context)
+                        anErrorOccured(url, context)
+                    }
+                }
+            }
+            webview.loadUrl("https://scradlexupdatecycle.netlify.app/")
+        }
+    }
+
+    private suspend fun checkPTagValue(url: String?, context: Context) {
+        withContext(Dispatchers.IO) {
+            try {
+                val doc = Jsoup.connect(url).get()
+                val pTag = doc.select("p").firstOrNull()
+                pTag?.let {
+                    val pValue = it.text()
+                    if (pValue == "1") {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            AlertDialog.Builder(context)
+                                .setTitle("New Update Available")
+                                .setMessage("Please update the app to continue experiencing the joy of music.")
+                                .setPositiveButton("UPDATE") { dialog, _ ->
+                                    fun openLinkInBrowser(url: String) {
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                        startActivity(intent)
+                                    }
+                                    openLinkInBrowser("https://github.com/Cyber-Zypher/ScradleX-Android/releases")
+                                }
+                                .setCancelable(false)
+                                .show()
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private suspend fun checkServerMaintenance(url: String?, context: Context) {
+        withContext(Dispatchers.IO) {
+            try {
+                val doc = Jsoup.connect(url).get()
+                val pTag = doc.select("p1").firstOrNull()
+                pTag?.let {
+                    val pValue = it.text()
+                    if (pValue == "1") {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            AlertDialog.Builder(context)
+                                .setTitle("Server Under Maintenance")
+                                .setMessage("Please try again later.")
+                                .setCancelable(false)
+                                .show()
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private suspend fun nAvailableOnReg(url: String?, context: Context) {
+        withContext(Dispatchers.IO) {
+            try {
+                val doc = Jsoup.connect(url).get()
+                val pTag = doc.select("p2").firstOrNull()
+                pTag?.let {
+                    val pValue = it.text()
+                    if (pValue == "1") {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            AlertDialog.Builder(context)
+                                .setTitle("Not Available")
+                                .setMessage("ScradleX is not available on your contry/region")
+                                .setCancelable(false)
+                                .show()
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private suspend fun tempShutDown(url: String?, context: Context) {
+        withContext(Dispatchers.IO) {
+            try {
+                val doc = Jsoup.connect(url).get()
+                val pTag = doc.select("p3").firstOrNull()
+                pTag?.let {
+                    val pValue = it.text()
+                    if (pValue == "1") {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            AlertDialog.Builder(context)
+                                .setTitle("Temporarily Down")
+                                .setMessage("ScradleX is Shutting down temporarily.")
+                                .setCancelable(false)
+                                .show()
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+    private suspend fun permShutDown(url: String?, context: Context) {
+        withContext(Dispatchers.IO) {
+            try {
+                val doc = Jsoup.connect(url).get()
+                val pTag = doc.select("p4").firstOrNull()
+                pTag?.let {
+                    val pValue = it.text()
+                    if (pValue == "1") {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            AlertDialog.Builder(context)
+                                .setTitle("Permanently Down")
+                                .setMessage("ScradleX is Shutting down permanently")
+                                .setCancelable(false)
+                                .show()
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+    private suspend fun anErrorOccured(url: String?, context: Context) {
+        withContext(Dispatchers.IO) {
+            try {
+                val doc = Jsoup.connect(url).get()
+                val pTag = doc.select("p4").firstOrNull()
+                pTag?.let {
+                    val pValue = it.text()
+                    if (pValue == "1") {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            AlertDialog.Builder(context)
+                                .setTitle("Permanently Down")
+                                .setMessage("ScradleX is Shutting down permanently")
+                                .setCancelable(false)
+                                .show()
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {

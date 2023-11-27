@@ -123,7 +123,7 @@ fun DatabaseSettings() {
                 val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
 
                 try {
-                    backupLauncher.launch("vimusic_${dateFormat.format(Date())}.db")
+                    backupLauncher.launch("scradlex_${dateFormat.format(Date())}.db")
                 } catch (e: ActivityNotFoundException) {
                     context.toast("Couldn't find an application to create documents")
                 }

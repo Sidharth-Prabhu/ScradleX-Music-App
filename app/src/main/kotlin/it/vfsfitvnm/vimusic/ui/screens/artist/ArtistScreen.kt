@@ -1,6 +1,7 @@
 package it.vfsfitvnm.vimusic.ui.screens.artist
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -71,6 +72,9 @@ fun ArtistScreen(browseId: String) {
     var artist by persist<Artist?>("artist/$browseId/artist")
 
     var artistPage by persist<Innertube.ArtistPage?>("artist/$browseId/artistPage")
+    val context = LocalContext.current
+    val followtoast = Toast.makeText(context, "Following artist", Toast.LENGTH_SHORT)
+    val unfollowtoast = Toast.makeText(context, "Unfollowed artist", Toast.LENGTH_SHORT)
 
     LaunchedEffect(Unit) {
         Database
@@ -133,9 +137,9 @@ fun ArtistScreen(browseId: String) {
 
                             HeaderIconButton(
                                 icon = if (artist?.bookmarkedAt == null) {
-                                    R.drawable.bookmark_outline
+                                    R.drawable.ic_follow
                                 } else {
-                                    R.drawable.bookmark
+                                    R.drawable.ic_following
                                 },
                                 color = colorPalette.accent,
                                 onClick = {

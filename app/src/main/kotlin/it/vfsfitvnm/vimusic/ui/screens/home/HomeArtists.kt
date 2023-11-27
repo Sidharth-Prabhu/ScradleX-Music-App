@@ -94,7 +94,7 @@ fun HomeArtistList(
                 contentType = 0,
                 span = { GridItemSpan(maxLineSpan) }
             ) {
-                Header(title = "Artists") {
+                Header(title = "Following") {
                     HeaderIconButton(
                         icon = R.drawable.text,
                         color = if (sortBy == ArtistSortBy.Name) colorPalette.text else colorPalette.textDisabled,

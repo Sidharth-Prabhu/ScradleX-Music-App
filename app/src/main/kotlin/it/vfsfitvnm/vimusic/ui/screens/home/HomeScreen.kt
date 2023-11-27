@@ -1,10 +1,17 @@
 package it.vfsfitvnm.vimusic.ui.screens.home
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.platform.LocalContext
+import com.google.firebase.Firebase
+import com.google.firebase.FirebaseApp
+import com.google.firebase.remoteconfig.remoteConfig
 import it.vfsfitvnm.compose.persist.PersistMapCleanup
 import it.vfsfitvnm.compose.routing.RouteHandler
 import it.vfsfitvnm.compose.routing.defaultStacking
@@ -13,6 +20,7 @@ import it.vfsfitvnm.compose.routing.defaultUnstacking
 import it.vfsfitvnm.compose.routing.isStacking
 import it.vfsfitvnm.compose.routing.isUnknown
 import it.vfsfitvnm.compose.routing.isUnstacking
+import it.vfsfitvnm.vimusic.BuildConfig
 import it.vfsfitvnm.vimusic.Database
 import it.vfsfitvnm.vimusic.R
 import it.vfsfitvnm.vimusic.models.SearchQuery
@@ -40,10 +48,32 @@ import it.vfsfitvnm.vimusic.utils.rememberPreference
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
+
+
 fun HomeScreen(onPlaylistUrl: (String) -> Unit) {
+//    val context = LocalContext.current
+//    FirebaseApp.initializeApp(context)
     val saveableStateHolder = rememberSaveableStateHolder()
+//    val remoteConfig = Firebase.remoteConfig
+//
+//    val remoteVersionCode = remoteConfig.getLong("app_version_code")
+//    val localVersionCode = BuildConfig.VERSION_CODE
 
     PersistMapCleanup("home/")
+
+//    if (remoteVersionCode > localVersionCode) {
+//        AlertDialog.Builder(context)
+//            .setTitle("Update Available")
+//            .setMessage("A new version of the app is available. Please update to continue using.")
+//            .setPositiveButton("Update") { _, _ ->
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com"))
+//                context.startActivity(intent)
+//            }
+//            .setNegativeButton("Cancel") { dialog, _ ->
+//                dialog.dismiss()
+//            }
+//            .show()
+//    }
 
     RouteHandler(
         listenToGlobalEmitter = true,
@@ -114,7 +144,7 @@ fun HomeScreen(onPlaylistUrl: (String) -> Unit) {
             )
 
             Scaffold(
-                topIconButtonId = R.drawable.equalizer,
+                topIconButtonId = R.drawable.ic_menu,
                 onTopIconButtonClick = { settingsRoute() },
                 tabIndex = tabIndex,
                 onTabChanged = onTabChanged,
@@ -122,7 +152,7 @@ fun HomeScreen(onPlaylistUrl: (String) -> Unit) {
                     Item(0, "Quick picks", R.drawable.sparkles)
                     Item(1, "Songs", R.drawable.musical_notes)
                     Item(2, "Playlists", R.drawable.playlist)
-                    Item(3, "Artists", R.drawable.person)
+                    Item(3, "Following", R.drawable.person)
                     Item(4, "Albums", R.drawable.disc)
                 }
             ) { currentTabIndex ->
