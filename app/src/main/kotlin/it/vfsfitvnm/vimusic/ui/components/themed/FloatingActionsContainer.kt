@@ -91,7 +91,9 @@ fun BoxScope.FloatingActionsContainerWithScrollToTop(
 ) {
     val transitionState = remember {
         MutableTransitionState<ScrollingInfo?>(ScrollingInfo())
-    }.apply { targetState = if (visible) scrollState.scrollingInfo() else null }
+    }.apply {
+        targetState = scrollState.scrollingInfo()
+    }
 
     FloatingActions(
         transitionState = transitionState,

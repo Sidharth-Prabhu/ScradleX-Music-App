@@ -98,7 +98,7 @@ fun About() {
 
         SettingsEntry(title = "View Source code", text = "Click here to view the official GitHub repository of ScradleX",
             onClick = {
-                uriHandler.openUri("https://github.com/Cyber-Zypher/ScradleX-Android")
+                uriHandler.openUri("https://github.com/Cyber-Zypher/ScradleX-Music-App/")
             }) {
 
         }

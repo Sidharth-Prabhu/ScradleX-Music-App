@@ -8,11 +8,11 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.frissco.scradlex"
+        applicationId = "com.frisscomed.scradlex"
         minSdk = 21
         targetSdk = 33
-        versionCode = 23
-        versionName = "1.14"
+        versionCode = 24
+        versionName = "1.15"
     }
 
     splits {

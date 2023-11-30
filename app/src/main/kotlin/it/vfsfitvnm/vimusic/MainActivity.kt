@@ -140,6 +140,7 @@ class MainActivity : ComponentActivity(), PersistMapOwner {
 
     @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         @Suppress("DEPRECATION", "UNCHECKED_CAST")
@@ -465,7 +466,7 @@ class MainActivity : ComponentActivity(), PersistMapOwner {
                                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                                         startActivity(intent)
                                     }
-                                    openLinkInBrowser("https://github.com/Cyber-Zypher/ScradleX-Android/releases")
+                                    openLinkInBrowser("https://github.com/Cyber-Zypher/ScradleX-Music-App/releases")
                                 }
                                 .setCancelable(false)
                                 .show()
